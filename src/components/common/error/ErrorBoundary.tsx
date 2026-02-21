@@ -1,18 +1,11 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react';
+import Button from '../button/Button';
 
-interface Props {
-  children: ReactNode;
-}
-
-interface State {
-  hasError: boolean;
-  error?: Error;
-}
+interface Props { children: ReactNode; }
+interface State { hasError: boolean; error?: Error; }
 
 class ErrorBoundary extends Component<Props, State> {
-  public state: State = {
-    hasError: false
-  };
+  public state: State = { hasError: false };
 
   public static getDerivedStateFromError(error: Error): State {
     return { hasError: true, error };
@@ -32,12 +25,9 @@ class ErrorBoundary extends Component<Props, State> {
             <p className="text-gray-600 mb-8 leading-relaxed">
               We're sorry for the inconvenience. Please try refreshing the page.
             </p>
-            <button 
-              className="bg-gradient-to-r from-red-500 to-orange-500 text-white px-8 py-4 text-lg font-semibold rounded-lg hover:-translate-y-0.5 transition-transform duration-300"
-              onClick={() => window.location.reload()}
-            >
+            <Button size="large" onClick={() => window.location.reload()}>
               Refresh Page
-            </button>
+            </Button>
           </div>
         </div>
       );

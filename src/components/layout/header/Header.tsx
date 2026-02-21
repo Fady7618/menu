@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import BrandLogo from '../../common/brand/BrandLogo';
+import { NAV_ITEMS } from '../../../config/nav';
 
 const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -7,10 +9,7 @@ const Header: React.FC = () => {
   const location = useLocation();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -19,28 +18,21 @@ const Header: React.FC = () => {
     setIsMobileMenuOpen(false);
   }, [location]);
 
-  const navItems = [
-    { path: '/', label: 'Home' },
-    { path: '/about', label: 'About' },
-    { path: '/menu', label: 'Menu' }
-  ];
-
   return (
     <header className={`fixed top-0 left-0 right-0 z-[1000] transition-all duration-300 ${isScrolled ? 'bg-white/98 backdrop-blur-md shadow-lg py-4' : 'bg-transparent py-6'}`}>
       <div className="max-w-7xl mx-auto px-8 flex justify-between items-center">
-        <Link to="/" className="flex items-center gap-2 text-2xl font-bold text-gray-800 transition-transform hover:scale-105">
-          <span className="text-4xl">🍽️</span>
-          <span className="bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent">
-            Delicious
-          </span>
-        </Link>
+        <BrandLogo />
 
         <nav className={`md:flex md:gap-8 md:items-center fixed md:static top-0 right-0 h-screen md:h-auto w-[70%] md:w-auto bg-white md:bg-transparent flex-col md:flex-row justify-center shadow-2xl md:shadow-none transition-all duration-300 ${isMobileMenuOpen ? 'flex right-0' : 'flex -right-full'}`}>
-          {navItems.map((item) => (
+          {NAV_ITEMS.map((item) => (
             <Link
               key={item.path}
               to={item.path}
-              className={`text-gray-800 font-semibold text-lg md:text-base relative transition-colors hover:text-red-500 my-6 md:my-0 ${location.pathname === item.path ? 'text-red-500 after:content-[""] after:absolute after:-bottom-1 after:left-0 after:w-full after:h-0.5 after:bg-gradient-to-r after:from-red-500 after:to-orange-500' : 'after:content-[""] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-gradient-to-r after:from-red-500 after:to-orange-500 after:transition-all after:duration-300 hover:after:w-full'}`}
+              className={`text-gray-800 font-semibold text-lg md:text-base relative transition-colors hover:text-red-500 my-6 md:my-0 ${
+                location.pathname === item.path
+                  ? 'text-red-500 after:content-[""] after:absolute after:-bottom-1 after:left-0 after:w-full after:h-0.5 after:bg-gradient-to-r after:from-red-500 after:to-orange-500'
+                  : 'after:content-[""] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-gradient-to-r after:from-red-500 after:to-orange-500 after:transition-all after:duration-300 hover:after:w-full'
+              }`}
             >
               {item.label}
             </Link>
