@@ -4,34 +4,36 @@ import BrandLogo from '../../common/brand/BrandLogo';
 import { NAV_ITEMS } from '../../../config/nav';
 
 const Header: React.FC = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const location = useLocation();
 
+  // Close drawer on route change
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    setDrawerOpen(false);
+  }, [location.pathname]);
 
+  // Prevent body scroll when drawer is open
   useEffect(() => {
-    setIsMobileMenuOpen(false);
-  }, [location]);
+    document.body.style.overflow = drawerOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [drawerOpen]);
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-[1000] transition-all duration-300 ${isScrolled ? 'bg-white/98 backdrop-blur-md shadow-lg py-4' : 'bg-transparent py-6'}`}>
-      <div className="max-w-7xl mx-auto px-8 flex justify-between items-center">
-        <BrandLogo />
+    <>
+      <header className="fixed top-0 left-0 w-full z-[100] px-8 py-5 flex items-center justify-between">
+        {/* Left — logo */}
+        <BrandLogo size="sm" />
 
-        <nav className={`md:flex md:gap-8 md:items-center fixed md:static top-0 right-0 h-screen md:h-auto w-[70%] md:w-auto bg-white md:bg-transparent flex-col md:flex-row justify-center shadow-2xl md:shadow-none transition-all duration-300 ${isMobileMenuOpen ? 'flex right-0' : 'flex -right-full'}`}>
+        {/* Center — desktop nav */}
+        <nav className="hidden md:flex items-center gap-10">
           {NAV_ITEMS.map((item) => (
             <Link
               key={item.path}
               to={item.path}
-              className={`text-gray-800 font-semibold text-lg md:text-base relative transition-colors hover:text-red-500 my-6 md:my-0 ${
+              className={`font-sans text-xs uppercase tracking-[0.2em] transition-colors duration-200 ${
                 location.pathname === item.path
-                  ? 'text-red-500 after:content-[""] after:absolute after:-bottom-1 after:left-0 after:w-full after:h-0.5 after:bg-gradient-to-r after:from-red-500 after:to-orange-500'
-                  : 'after:content-[""] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-gradient-to-r after:from-red-500 after:to-orange-500 after:transition-all after:duration-300 hover:after:w-full'
+                  ? 'text-rust'
+                  : 'text-white/70 hover:text-white'
               }`}
             >
               {item.label}
@@ -39,19 +41,64 @@ const Header: React.FC = () => {
           ))}
         </nav>
 
+        {/* Right — CTA + hamburger */}
+        <div className="flex items-center gap-6">
+          <Link
+            to="/reservations"
+            className="hidden md:inline-block border border-white/50 text-white/80 hover:border-white hover:text-white transition-all duration-300 px-5 py-2 text-xs uppercase tracking-[0.2em] font-sans"
+          >
+            Reserve
+          </Link>
+
+          {/* Hamburger — mobile only */}
+          <button
+            className="md:hidden flex flex-col gap-[5px] p-1"
+            onClick={() => setDrawerOpen(true)}
+            aria-label="Open menu"
+          >
+            <span className="block w-6 h-px bg-white" />
+            <span className="block w-4 h-px bg-white" />
+            <span className="block w-6 h-px bg-white" />
+          </button>
+        </div>
+      </header>
+
+      {/* Mobile full-screen drawer */}
+      <div
+        className={`fixed inset-0 z-[200] bg-bg flex flex-col items-center justify-center transition-opacity duration-500 ${
+          drawerOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        }`}
+      >
+        {/* Close button */}
         <button
-          className="md:hidden z-[1001] p-2"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          aria-label="Toggle menu"
+          className="absolute top-6 right-8 text-white/60 hover:text-white text-2xl"
+          onClick={() => setDrawerOpen(false)}
+          aria-label="Close menu"
         >
-          <div className="w-6 flex flex-col gap-1.5">
-            <span className={`block h-0.5 bg-gray-800 transition-all duration-300 ${isMobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`}></span>
-            <span className={`block h-0.5 bg-gray-800 transition-all duration-300 ${isMobileMenuOpen ? 'opacity-0' : ''}`}></span>
-            <span className={`block h-0.5 bg-gray-800 transition-all duration-300 ${isMobileMenuOpen ? '-rotate-45 -translate-y-2' : ''}`}></span>
-          </div>
+          ✕
         </button>
+
+        <BrandLogo size="lg" className="mb-16" />
+
+        <nav className="flex flex-col items-center gap-8">
+          {NAV_ITEMS.map((item) => (
+            <Link
+              key={item.path}
+              to={item.path}
+              className="font-display text-3xl text-white hover:text-rust transition-colors duration-200"
+            >
+              {item.label}
+            </Link>
+          ))}
+          <Link
+            to="/reservations"
+            className="mt-4 border border-white text-white px-8 py-3 text-xs uppercase tracking-[0.2em] font-sans hover:bg-white hover:text-bg transition-all duration-300"
+          >
+            Reserve a Table
+          </Link>
+        </nav>
       </div>
-    </header>
+    </>
   );
 };
 

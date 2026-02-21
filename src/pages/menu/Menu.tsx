@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import MenuItemCard from '../../components/features/menu/MenuItemCard';
+import Loader from '../../components/common/loader/Loader';
 import { useMenu } from '../../hooks/useMenu';
 import { getCategories } from '../../services/menuService';
 import type { MenuCategory } from '../../types/MenuCategory';
-import Loader from '../../components/common/loader/Loader';
-import MenuItemCard from '../../components/features/menu/MenuItemCard';
 
 const Menu: React.FC = () => {
   const { category } = useParams<{ category?: string }>();
   const navigate = useNavigate();
   const [categories, setCategories] = useState<MenuCategory[]>([]);
 
-  const { data: menuItems, loading, error } = useMenu({
+  const { data: items, loading, error } = useMenu({
     category,
-    availableOnly: !category,
+    availableOnly: true,
   });
 
   useEffect(() => {
@@ -21,70 +21,72 @@ const Menu: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen">
-      {/* Hero */}
-      <section className="bg-gradient-to-br from-indigo-500 to-purple-600 min-h-[40vh] flex items-center justify-center pt-32 pb-16 px-8 text-center text-white">
-        <div className="max-w-7xl mx-auto">
-          <h1 className="text-5xl md:text-6xl font-extrabold mb-4">Our Menu</h1>
-          <p className="text-xl md:text-2xl opacity-90">Fresh ingredients, crafted with care</p>
-        </div>
-      </section>
+    <div className="min-h-screen bg-bg text-white pt-24 pb-20 px-8 md:px-16">
+      {/* Heading */}
+      <div className="max-w-7xl mx-auto mb-12">
+        <p className="font-serif text-rust italic text-xl mb-3">
+          {category ? `Browsing` : `Explore all`}
+        </p>
+        <h1
+          className="font-display font-bold text-white"
+          style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)' }}
+        >
+          {category ? category : 'Our Menu'}
+        </h1>
+      </div>
 
       {/* Category tabs */}
       {categories.length > 0 && (
-        <div className="sticky top-0 z-10 bg-white shadow-sm">
-          <div className="max-w-7xl mx-auto px-8 py-3 flex gap-3 overflow-x-auto scrollbar-hide">
+        <div className="max-w-7xl mx-auto mb-12 flex flex-wrap gap-3">
+          <button
+            onClick={() => navigate('/menu')}
+            className={`px-5 py-2 text-xs uppercase tracking-[0.2em] font-sans border transition-all duration-200 ${
+              !category
+                ? 'border-rust text-rust'
+                : 'border-white/20 text-white/50 hover:border-white/60 hover:text-white'
+            }`}
+          >
+            All
+          </button>
+          {categories.map((cat) => (
             <button
-              onClick={() => navigate('/menu')}
-              className={`shrink-0 px-5 py-2 rounded-full text-sm font-semibold transition-colors ${
-                !category ? 'bg-indigo-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-indigo-100'
+              key={cat.name}
+              onClick={() => navigate(`/menu/${encodeURIComponent(cat.name)}`)}
+              className={`px-5 py-2 text-xs uppercase tracking-[0.2em] font-sans border transition-all duration-200 ${
+                category === cat.name
+                  ? 'border-rust text-rust'
+                  : 'border-white/20 text-white/50 hover:border-white/60 hover:text-white'
               }`}
             >
-              All
+              {cat.name} <span className="text-white/30 ml-1">({cat.count})</span>
             </button>
-            {categories.map((cat) => (
-              <button
-                key={cat.name}
-                onClick={() => navigate(`/menu/${encodeURIComponent(cat.name)}`)}
-                className={`shrink-0 px-5 py-2 rounded-full text-sm font-semibold transition-colors ${
-                  category?.toLowerCase() === cat.name.toLowerCase()
-                    ? 'bg-indigo-500 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-indigo-100'
-                }`}
-              >
-                {cat.name}
-                <span className="ml-1 text-xs opacity-70">({cat.count})</span>
-              </button>
-            ))}
-          </div>
+          ))}
         </div>
       )}
 
-      {/* Content */}
-      <div className="max-w-7xl mx-auto px-8 py-12">
-        {loading && <Loader />}
+      {/* States */}
+      {loading && <Loader fullScreen />}
 
-        {error && (
-          <div className="text-center py-20 text-red-500">
-            <p className="text-xl font-semibold">Failed to load menu</p>
-            <p className="text-sm mt-2">{error.message}</p>
-          </div>
-        )}
+      {error && (
+        <div className="max-w-7xl mx-auto text-center py-20">
+          <p className="font-serif text-rust italic text-2xl mb-3">Something went wrong.</p>
+          <p className="font-sans font-light text-white/40">{error.message}</p>
+        </div>
+      )}
 
-        {!loading && !error && menuItems?.length === 0 && (
-          <div className="text-center py-20 text-gray-500">
-            <p className="text-xl">No items available in this category.</p>
-          </div>
-        )}
+      {!loading && !error && items?.length === 0 && (
+        <div className="max-w-7xl mx-auto text-center py-20">
+          <p className="font-serif text-rust italic text-2xl">Nothing here yet.</p>
+        </div>
+      )}
 
-        {!loading && !error && menuItems && menuItems.length > 0 && (
-          <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {menuItems.map((item) => (
-              <MenuItemCard key={item.id} item={item} />
-            ))}
-          </div>
-        )}
-      </div>
+      {!loading && !error && items && items.length > 0 && (
+        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {items.map((item) => (
+            <MenuItemCard key={item.id} item={item} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

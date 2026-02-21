@@ -1,125 +1,107 @@
 import React from 'react';
-import Card from '../../components/common/card/Card';
-
-const TEAM = [
-  { id: 'michael', name: 'Chef Michael',  role: 'Head Chef',     icon: '👨‍🍳' },
-  { id: 'sarah',   name: 'Sarah Johnson', role: 'Pastry Chef',   icon: '👩‍🍳' },
-  { id: 'david',   name: 'David Chen',    role: 'Sous Chef',     icon: '👨‍🍳' },
-  { id: 'emily',   name: 'Emily White',   role: 'Manager',       icon: '👩‍💼' },
-];
 
 const VALUES = [
-  { id: 'quality',    title: 'Quality',    icon: '⭐', description: 'We never compromise on ingredient quality' },
-  { id: 'passion',    title: 'Passion',    icon: '❤️', description: 'Cooking is our art and passion' },
-  { id: 'service',    title: 'Service',    icon: '🤝', description: 'Your satisfaction is our priority' },
-  { id: 'innovation', title: 'Innovation', icon: '💡', description: 'Always creating new exciting flavors' },
+  { title: 'No Shortcuts', body: 'We dry-age our beef for a minimum of 28 days. We render our own stocks. We never sacrifice time for convenience.' },
+  { title: 'Provenance', body: 'Every ingredient on our menu has a name, an address, and a story. We know our farmers, fishers, and foragers personally.' },
+  { title: 'The Fire', body: 'Open-fire cooking is not a trend for us — it is the foundation. Hardwood. Cast iron. Smoke. These are our tools.' },
+  { title: 'Hospitality', body: 'A perfect meal is inseparable from the people who serve it. Our team trains for months before their first table.' },
 ];
 
-const About: React.FC = () => (
-  <div className="min-h-screen">
-    {/* Hero */}
-    <section className="bg-gradient-to-br from-indigo-500 to-purple-600 pt-40 pb-24 px-8 text-center text-white">
-      <div className="max-w-7xl mx-auto">
-        <h1 className="text-5xl md:text-6xl font-extrabold mb-4 animate-fade-in-up">About Us</h1>
-        <p className="text-xl md:text-2xl opacity-95 animate-fade-in-up-delay">
-          Discover our story and passion for culinary excellence
-        </p>
-      </div>
-    </section>
+const TEAM = [
+  { name: 'Marcus Reyes', role: 'Executive Chef & Founder', img: 'https://images.unsplash.com/photo-1583394293214-90b96cfe9aa2?w=400&q=80&fit=crop' },
+  { name: 'Lena Fischer', role: 'Head Sommelier', img: 'https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?w=400&q=80&fit=crop' },
+  { name: 'James Okafor', role: 'Sous Chef', img: 'https://images.unsplash.com/photo-1540492649367-c8565a571e4b?w=400&q=80&fit=crop' },
+  { name: 'Priya Nair', role: 'Pastry Chef', img: 'https://images.unsplash.com/photo-1607631568010-a87245c0daf8?w=400&q=80&fit=crop' },
+];
 
-    {/* Story */}
-    <section className="py-20">
-      <div className="max-w-7xl mx-auto px-8">
-        <div className="grid md:grid-cols-2 gap-16 items-center">
-          <div>
-            <h2 className="text-4xl font-bold mb-6 text-gray-800">Our Story</h2>
-            <p className="text-gray-600 leading-relaxed text-lg mb-6">
-              Founded in 2010, Delicious Restaurant has been serving the community with
-              exceptional cuisine and warm hospitality. What started as a small family
-              restaurant has grown into a beloved dining destination.
-            </p>
-            <p className="text-gray-600 leading-relaxed text-lg mb-6">
-              Our commitment to using fresh, locally-sourced ingredients and traditional
-              cooking methods has remained unchanged. Every dish tells a story, and every
-              meal is a celebration of flavors.
-            </p>
-            <p className="text-gray-600 leading-relaxed text-lg">
-              Today, we continue to innovate while honoring our roots, creating memorable
-              dining experiences for our guests every single day.
-            </p>
-          </div>
-          <div className="flex justify-center">
-            <div className="w-full max-w-md aspect-square bg-gradient-to-br from-red-500 to-orange-500 rounded-3xl flex items-center justify-center text-9xl shadow-2xl shadow-red-500/30 animate-float">
-              🏪
-            </div>
-          </div>
+const About: React.FC = () => {
+  return (
+    <div className="min-h-screen bg-bg text-white">
+      {/* Hero */}
+      <div className="relative h-[70vh] flex items-end pb-16 px-8 md:px-16 overflow-hidden">
+        <img
+          src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1400&q=80&fit=crop"
+          alt="Restaurant interior"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/60 to-transparent" />
+        <div className="relative z-10 max-w-7xl mx-auto w-full">
+          <p className="font-serif text-rust italic text-xl mb-3">About us</p>
+          <h1
+            className="font-display font-bold text-white"
+            style={{ fontSize: 'clamp(2.5rem, 6vw, 5rem)' }}
+          >
+            The Ember &amp; Oak<br />
+            <span className="italic">Story</span>
+          </h1>
         </div>
       </div>
-    </section>
 
-    {/* Values */}
-    <section className="py-20 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-8">
-        <h2 className="text-center text-4xl md:text-5xl font-bold mb-12 bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent">
-          Our Values
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {VALUES.map((value) => (
-            <Card key={value.id} hover>
-              <div className="text-center">
-                <div className="text-6xl mb-4">{value.icon}</div>
-                <h3 className="text-2xl font-semibold mb-3 text-gray-800">{value.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{value.description}</p>
+      {/* Our Story prose */}
+      <section className="max-w-3xl mx-auto px-8 md:px-0 py-20">
+        <p className="font-sans font-light text-white/70 text-lg leading-loose">
+          In 2009, chef Marcus Reyes converted a forgotten rail-yard warehouse on the edge of the city
+          into what would become the most talked-about dining room in the region. His bet was simple:
+          that fire — honest, unpredictable, ancient — was the only cooking technique that
+          could not be franchised, copied, or automated.
+        </p>
+        <p className="font-sans font-light text-white/70 text-lg leading-loose mt-6">
+          Sixteen years later, The Ember &amp; Oak holds two Michelin stars and remains
+          exactly as it began — a single open kitchen, a hardwood fire, and a team of cooks
+          who believe the best meal you've ever had is still ahead of you.
+        </p>
+      </section>
+
+      {/* Values */}
+      <section className="bg-white/3 border-t border-b border-white/10 py-20 px-8 md:px-16">
+        <div className="max-w-7xl mx-auto">
+          <p className="font-serif text-rust italic text-xl mb-3">What we stand for</p>
+          <h2
+            className="font-display font-bold text-white mb-12"
+            style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}
+          >
+            Our Values
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {VALUES.map((v) => (
+              <div key={v.title} className="border-t border-white/10 pt-6">
+                <h3 className="font-display font-bold text-white text-xl mb-3">{v.title}</h3>
+                <p className="font-sans font-light text-white/50 text-sm leading-relaxed">{v.body}</p>
               </div>
-            </Card>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    {/* Team */}
-    <section className="py-20">
-      <div className="max-w-7xl mx-auto px-8">
-        <h2 className="text-center text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent">
-          Meet Our Team
-        </h2>
-        <p className="text-center text-xl text-gray-600 mb-12">
-          The talented people behind your favorite dishes
-        </p>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {TEAM.map((member) => (
-            <Card key={member.id} hover>
-              <div className="text-center">
-                <div className="w-32 h-32 mx-auto mb-6 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-6xl shadow-lg shadow-indigo-500/30">
-                  {member.icon}
+      {/* Team */}
+      <section className="py-20 px-8 md:px-16">
+        <div className="max-w-7xl mx-auto">
+          <p className="font-serif text-rust italic text-xl mb-3">The people</p>
+          <h2
+            className="font-display font-bold text-white mb-12"
+            style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}
+          >
+            Our Team
+          </h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {TEAM.map((member) => (
+              <div key={member.name} className="group">
+                <div className="aspect-square overflow-hidden mb-4">
+                  <img
+                    src={member.img}
+                    alt={member.name}
+                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                  />
                 </div>
-                <h3 className="text-2xl font-semibold mb-2 text-gray-800">{member.name}</h3>
-                <p className="text-gray-600 text-lg">{member.role}</p>
+                <p className="font-display font-bold text-white">{member.name}</p>
+                <p className="font-sans font-light text-white/40 text-sm mt-1">{member.role}</p>
               </div>
-            </Card>
-          ))}
-        </div>
-      </div>
-    </section>
-
-    {/* Mission */}
-    <section className="py-20 bg-gray-50">
-      <div className="max-w-4xl mx-auto px-8">
-        <Card>
-          <div className="text-center p-8">
-            <h2 className="text-4xl font-bold mb-6 bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent">
-              Our Mission
-            </h2>
-            <p className="text-gray-600 text-xl leading-relaxed">
-              To create unforgettable dining experiences through exceptional food,
-              outstanding service, and a welcoming atmosphere. We believe that great
-              food brings people together and creates lasting memories.
-            </p>
+            ))}
           </div>
-        </Card>
-      </div>
-    </section>
-  </div>
-);
+        </div>
+      </section>
+    </div>
+  );
+};
 
 export default About;
