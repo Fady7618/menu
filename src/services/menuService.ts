@@ -8,7 +8,7 @@ function transformMenuItem(raw: MenuItemRaw): MenuItem {
     name: raw.Name,
     description: raw.Description,
     price: raw.Price ?? 0,
-    category: raw.Category,
+    category: raw.Category ?? '',
     isAvailable: raw.Available === true || raw.Available === 'TRUE',
     imageUrl: raw.Image,
     formattedPrice: `$${(raw.Price ?? 0).toFixed(2)}`,
@@ -17,7 +17,9 @@ function transformMenuItem(raw: MenuItemRaw): MenuItem {
 
 export async function getMenuItems(): Promise<MenuItem[]> {
   const raw = await fetchGoogleSheet<MenuItemRaw>();
-  return raw.map(transformMenuItem);
+  return raw
+    .filter((r) => r.Id != null && r.Name && r.Category)
+    .map(transformMenuItem);
 }
 
 export async function getAvailableMenuItems(): Promise<MenuItem[]> {
@@ -29,7 +31,8 @@ export async function getMenuItemsByCategory(category: string): Promise<MenuItem
   const items = await getMenuItems();
   return items.filter(
     (item) =>
-      item.category.toLowerCase() === category.toLowerCase() && item.isAvailable
+      (item.category ?? '').toLowerCase() === category.toLowerCase() &&
+      item.isAvailable
   );
 }
 
