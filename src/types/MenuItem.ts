@@ -1,18 +1,22 @@
-import type { BaseEntity } from "./BaseEntity";
-import type { StrapiImage } from "./StrapiImage";
-
-export interface MenuItemCategory {
-  id: number;
-  documentId: string;
-  name: string;
-  slug: string;
+// Raw row from Google Sheets CSV (column names must match exactly)
+export interface MenuItemRaw {
+  Id: number;
+  Name: string;
+  Description: string;
+  Price: number;
+  Category: string;
+  Available: boolean | string;
+  Image?: string;
 }
 
-export interface MenuItem extends BaseEntity {
+// Processed item used throughout the app
+export interface MenuItem {
+  id: number;
   name: string;
   description: string;
   price: number;
-  image?: StrapiImage;
+  category: string;
   isAvailable: boolean;
-  category?: MenuItemCategory;
+  imageUrl?: string;
+  formattedPrice: string;
 }

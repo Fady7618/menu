@@ -1,16 +1,9 @@
-export interface StrapiResponse<T> {
-  data: T;
-  meta?: {
-    pagination?: {
-      page: number;
-      pageSize: number;
-      pageCount: number;
-      total: number;
-    };
-  };
-}
-
 export interface ApiError {
   message: string;
-  status?: number;
+}
+
+export interface FetchState<T> {
+  data: T | null;
+  loading: boolean;
+  error: ApiError | null;
 }

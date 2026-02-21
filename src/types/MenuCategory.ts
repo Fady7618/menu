@@ -1,6 +1,4 @@
-import type { BaseEntity } from "./BaseEntity";
-
-export interface MenuCategory extends BaseEntity {
+export interface MenuCategory {
   name: string;
-  slug: string;
+  count: number;
 }
