@@ -1,18 +1,5 @@
 import React from 'react';
-
-const VALUES = [
-  { title: 'No Shortcuts', body: 'We dry-age our beef for a minimum of 28 days. We render our own stocks. We never sacrifice time for convenience.' },
-  { title: 'Provenance', body: 'Every ingredient on our menu has a name, an address, and a story. We know our farmers, fishers, and foragers personally.' },
-  { title: 'The Fire', body: 'Open-fire cooking is not a trend for us — it is the foundation. Hardwood. Cast iron. Smoke. These are our tools.' },
-  { title: 'Hospitality', body: 'A perfect meal is inseparable from the people who serve it. Our team trains for months before their first table.' },
-];
-
-const TEAM = [
-  { name: 'Marcus Reyes', role: 'Executive Chef & Founder', img: 'https://images.unsplash.com/photo-1583394293214-90b96cfe9aa2?w=400&q=80&fit=crop' },
-  { name: 'Lena Fischer', role: 'Head Sommelier', img: 'https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?w=400&q=80&fit=crop' },
-  { name: 'James Okafor', role: 'Sous Chef', img: 'https://images.unsplash.com/photo-1540492649367-c8565a571e4b?w=400&q=80&fit=crop' },
-  { name: 'Priya Nair', role: 'Pastry Chef', img: 'https://images.unsplash.com/photo-1607631568010-a87245c0daf8?w=400&q=80&fit=crop' },
-];
+import { VALUES, TEAM } from '../../config/content';
 
 const About: React.FC = () => {
   return (

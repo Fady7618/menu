@@ -6,23 +6,13 @@ import { useMenu } from '../../../hooks/useMenu';
 import { homeCarouselConfig } from '../../../config/carousel';
 import { optimizeImageUrl, preloadImages } from '../../../utils/imageOptimization';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { PLATE_IMAGES } from '../../../config/content';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
-
-const PLATE_IMAGES = [
-  'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=80&fit=crop',
-  'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&q=80&fit=crop',
-  'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=400&q=80&fit=crop',
-  'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&q=80&fit=crop',
-  'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80&fit=crop',
-  'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400&q=80&fit=crop',
-  'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80&fit=crop',
-  'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&q=80&fit=crop',
-];
 
 interface MenuSectionProps {}
 

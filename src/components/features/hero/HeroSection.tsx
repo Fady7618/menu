@@ -135,7 +135,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               }}
             >
               <img
-                src="https://images.unsplash.com/photo-1544025162-d76694265947?w=600&q=80&fit=crop"
+                src="hero.png"
                 alt="Signature dish"
                 className="w-full h-full object-cover"
               />
