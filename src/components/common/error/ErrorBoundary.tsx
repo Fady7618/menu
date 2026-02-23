@@ -25,7 +25,7 @@ class ErrorBoundary extends Component<Props, State> {
             <p className="text-gray-600 mb-8 leading-relaxed">
               We're sorry for the inconvenience. Please try refreshing the page.
             </p>
-            <Button size="large" onClick={() => window.location.reload()}>
+            <Button onClick={() => window.location.reload()}>
               Refresh Page
             </Button>
           </div>

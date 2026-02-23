@@ -1,59 +1,49 @@
-import React, { useRef, useEffect, useLayoutEffect } from 'react';
-import { gsap } from '../../../utils/gsap';
-
-const EVENTS = [
-  {
-    name: 'Wine & Wagyu Evening',
-    date: 'Friday, March 7, 2026',
-    time: '7:00 PM — 11:00 PM',
-    dressCode: 'Smart Casual',
-    description: 'An exclusive four-course pairing of A5 Wagyu selections with hand-chosen Burgundy and Barolo.',
-  },
-  {
-    name: 'Chef\'s Table: Origins',
-    date: 'Saturday, March 15, 2026',
-    time: '6:30 PM — 10:30 PM',
-    dressCode: 'Cocktail Attire',
-    description: 'Ten seats. Seven courses. One kitchen counter. Our most intimate dining experience.',
-  },
-  {
-    name: 'Spring Market Dinner',
-    date: 'Sunday, April 6, 2026',
-    time: '5:00 PM — 9:00 PM',
-    dressCode: 'Casual',
-    description: 'A seasonal celebration sourcing entirely from local farms, cooked live over hardwood.',
-  },
-];
+import React, { useRef } from 'react';
+import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
+import SectionHeading from '../../common/heading/SectionHeading';
+import { EVENTS } from '../../../config/content';
+import type { Event } from '../../../config/content';
 
 interface EventsSectionProps {
   sectionIndex: number;
   registerAnimateIn?: (fn: () => void) => void;
+  events?: readonly Event[];
 }
 
-const EventsSection: React.FC<EventsSectionProps> = ({ sectionIndex, registerAnimateIn }) => {
+/**
+ * EventsSection - Refactored with DRY components
+ * - Uses useScrollAnimation hook
+ * - Uses SectionHeading component
+ * - Events come from config with prop override support
+ */
+const EventsSection: React.FC<EventsSectionProps> = ({
+  sectionIndex: _sectionIndex,
+  registerAnimateIn,
+  events = EVENTS,
+}) => {
   const photoRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
 
-  useLayoutEffect(() => {
-    gsap.set(photoRef.current, { opacity: 0, x: 80 });
-    gsap.set(cardRef.current, { opacity: 0, x: -80 });
-    }, []);
-  
-  useEffect(() => {
-    const animateIn = () => {
-      gsap.fromTo(
-        photoRef.current,
-        { x: 80, opacity: 0 },
-        { x: 0, opacity: 1, duration: 1, ease: 'power3.out' }
-      );
-      gsap.fromTo(
-        cardRef.current,
-        { x: -80, opacity: 0 },
-        { x: 0, opacity: 1, duration: 1, delay: 0.2, ease: 'power3.out' }
-      );
-    };
-    registerAnimateIn?.(animateIn);
-  }, [registerAnimateIn]);
+  useScrollAnimation({
+    ref: photoRef,
+    config: {
+      from: { opacity: 0, x: 80 },
+      to: { opacity: 1, x: 0 },
+      duration: 1,
+    },
+    registerAnimateIn,
+  });
+
+  useScrollAnimation({
+    ref: cardRef,
+    config: {
+      from: { opacity: 0, x: -80 },
+      to: { opacity: 1, x: 0 },
+      duration: 1,
+      delay: 0.2,
+    },
+    registerAnimateIn,
+  });
 
   return (
     <div className="w-full h-full bg-bg flex items-center">
@@ -64,21 +54,23 @@ const EventsSection: React.FC<EventsSectionProps> = ({ sectionIndex, registerAni
             ref={cardRef}
             className="bg-ivory text-bg p-10 md:p-12 max-w-lg w-full shadow-2xl md:translate-x-16"
           >
-            <p className="font-serif text-rust text-xl italic mb-4">Upcoming Events</p>
-            <h2
-              className="font-display font-bold leading-tight mb-8"
-              style={{ fontSize: 'clamp(1.8rem, 3vw, 2.5rem)' }}
-            >
-              Reserve your<br />experience
-            </h2>
+            <SectionHeading
+              eyebrow="Upcoming Events"
+              title={<>Reserve your<br />experience</>}
+              eyebrowClassName="text-rust mb-4"
+              titleClassName="text-bg mb-8"
+            />
             <div className="space-y-6">
-              {EVENTS.map((event) => (
-                <div key={event.name} className="border-t border-bg/10 pt-5">
+              {events.map((event) => (
+                <div key={event.id} className="border-t border-bg/10 pt-5">
                   <p className="font-display font-bold text-lg text-bg">{event.name}</p>
                   <p className="font-sans font-light text-bg/60 text-sm mt-1">{event.date}</p>
                   <p className="font-sans font-light text-bg/60 text-sm">{event.time}</p>
                   <p className="font-sans text-xs uppercase tracking-widest text-bg/40 mt-1">
-                    Dress Code: {event.dressCode}
+                    {event.dressCode}
+                  </p>
+                  <p className="font-sans font-light text-bg/70 text-sm mt-3 leading-relaxed">
+                    {event.description}
                   </p>
                 </div>
               ))}
@@ -86,11 +78,11 @@ const EventsSection: React.FC<EventsSectionProps> = ({ sectionIndex, registerAni
           </div>
         </div>
 
-        {/* Right — full-bleed photo */}
-        <div ref={photoRef} className="relative w-full md:w-1/2 h-64 md:h-full">
+        {/* Right — Photo */}
+        <div ref={photoRef} className="relative w-full md:w-1/2 h-96 md:h-full">
           <img
-            src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=900&q=80&fit=crop"
-            alt="Dining room"
+            src="https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=900&q=80&fit=crop"
+            alt="Special Events"
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-bg/20" />
