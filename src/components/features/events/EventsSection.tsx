@@ -101,9 +101,9 @@ const EventsSection: React.FC<EventsSectionProps> = ({
         </div>
 
         {/* Right — Photo */}
-        <div ref={photoRef} className="relative w-full md:w-1/2 h-96 md:h-full flex self-center items-center justify-center bg-[url(public/1.png)] bg-no-repeat bg-size-[85%] bg-center">
+        <div ref={photoRef} className="relative w-full md:w-1/2 h-96 md:h-full flex self-center items-center justify-center bg-[url(/1.png)] bg-no-repeat bg-size-[85%] bg-center">
           <img
-            src="public/pizza.png"
+            src="pizza.png"
             alt="Special Events"
             ref={plateRef}
             className="w-[60%] h-[60%] object-cover"

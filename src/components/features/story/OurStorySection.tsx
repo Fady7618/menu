@@ -80,7 +80,7 @@ const OurStorySection: React.FC<OurStorySectionProps> = ({
     <div className="w-full min-h-screen flex items-center">
       <div className="w-full h-full flex flex-col md:flex-row items-center justify-center">
         {/* Left — full-bleed photo */}
-        <div ref={photoRef} className="relative bg-[url(public/2.png)] bg-no-repeat bg-contain bg-center bg-size-[50%] w-full md:w-1/2 h-64 md:h-full flex items-center justify-center ">
+        <div ref={photoRef} className="relative bg-[url(/2.png)] bg-no-repeat bg-contain bg-center bg-size-[50%] w-full md:w-1/2 h-64 md:h-full flex items-center justify-center ">
           <img
             src={image}
             alt={imageAlt}
