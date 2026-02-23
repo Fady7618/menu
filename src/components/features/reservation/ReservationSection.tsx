@@ -3,27 +3,17 @@ import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
 import SectionHeading from '../../common/heading/SectionHeading';
 import FormInput from '../../common/form/FormInput';
 import Button from '../../common/button/Button';
-import BrandLogo from '../../common/brand/BrandLogo';
-import { NAV_ITEMS } from '../../../config/nav';
-import { Link } from 'react-router-dom';
 import { RESERVATION_CONTENT } from '../../../config/content';
 
-interface ReservationsSectionProps {
-  sectionIndex: number;
-  registerAnimateIn?: (fn: () => void) => void;
-}
+interface ReservationsSectionProps {}
 
 /**
- * ReservationSection - Refactored with DRY components
- * - Uses useScrollAnimation hook
- * - Uses FormInput component
- * - Uses SectionHeading component
+ * ReservationSection - Refactored with ScrollTrigger
+ * - Removed sectionIndex and registerAnimateIn props
+ * - Uses ScrollTrigger for scroll-based animations
  * - Content comes from config
  */
-const ReservationsSection: React.FC<ReservationsSectionProps> = ({
-  sectionIndex: _sectionIndex,
-  registerAnimateIn,
-}) => {
+const ReservationsSection: React.FC<ReservationsSectionProps> = () => {
   const formRef = useRef<HTMLDivElement>(null);
   const [submitted, setSubmitted] = useState(false);
 
@@ -34,7 +24,11 @@ const ReservationsSection: React.FC<ReservationsSectionProps> = ({
       to: { opacity: 1, y: 0 },
       duration: 1,
     },
-    registerAnimateIn,
+    scrollTrigger: {
+      trigger: formRef.current || undefined,
+      start: 'top 80%',
+      toggleActions: 'play none none none',
+    },
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -43,13 +37,14 @@ const ReservationsSection: React.FC<ReservationsSectionProps> = ({
   };
 
   return (
-    <div className="w-full h-full bg-bg flex flex-col">
+    <div className="w-full min-h-screen  flex flex-col">
       {/* Reservations form */}
       <div className="flex-1 flex items-center justify-center px-8 py-16">
-        <div ref={formRef} className="w-full max-w-xl">
+        <div ref={formRef} className="w-full max-w-xl bg-white/5 backdrop-blur-sm rounded-lg p-8">
           <SectionHeading
             eyebrow={RESERVATION_CONTENT.eyebrow}
             title={RESERVATION_CONTENT.title}
+            eyebrowClassName='text-rust'
             align="center"
             className="mb-10"
           />
@@ -101,27 +96,6 @@ const ReservationsSection: React.FC<ReservationsSectionProps> = ({
           )}
         </div>
       </div>
-
-      {/* Footer */}
-      <footer className="border-t border-white/10 px-8 md:px-16 py-8">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-          <BrandLogo size="sm" />
-          <nav className="flex items-center gap-8">
-            {NAV_ITEMS.map((item) => (
-              <Link
-                key={item.path}
-                to={item.path}
-                className="font-sans text-xs uppercase tracking-[0.2em] text-white/40 hover:text-white transition-colors duration-200"
-              >
-                {item.label}
-              </Link>
-            ))}
-          </nav>
-          <p className="font-sans text-xs text-white/30">
-            © 2026 The Ember &amp; Oak. All rights reserved.
-          </p>
-        </div>
-      </footer>
     </div>
   );
 };

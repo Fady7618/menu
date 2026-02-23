@@ -1,13 +1,10 @@
 import React, { useRef } from 'react';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
 import SectionHeading from '../../common/heading/SectionHeading';
-import ImageOverlay from '../../common/overlay/ImageOverlay';
 import Button from '../../common/button/Button';
 import { STORY_CONTENT } from '../../../config/content';
 
 interface OurStorySectionProps {
-  sectionIndex: number;
-  registerAnimateIn?: (fn: () => void) => void;
   eyebrow?: string;
   title?: string;
   body?: string[];
@@ -16,21 +13,20 @@ interface OurStorySectionProps {
 }
 
 /**
- * OurStorySection - Refactored with DRY components
- * - Uses useScrollAnimation hook
- * - Uses SectionHeading component
- * - Uses ImageOverlay component
+ * OurStorySection - Refactored with ScrollTrigger
+ * - Removed sectionIndex and registerAnimateIn props
+ * - Uses ScrollTrigger for scroll-based animations
+ * - Uses SectionHeading and ImageOverlay components
  * - Content comes from config
  */
 const OurStorySection: React.FC<OurStorySectionProps> = ({
-  sectionIndex: _sectionIndex,
-  registerAnimateIn,
   eyebrow = STORY_CONTENT.eyebrow,
   title = STORY_CONTENT.title,
   body = STORY_CONTENT.body,
   image = STORY_CONTENT.image,
   imageAlt = STORY_CONTENT.imageAlt,
 }) => {
+  const plateRef = useRef<HTMLImageElement>(null);
   const photoRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -41,7 +37,11 @@ const OurStorySection: React.FC<OurStorySectionProps> = ({
       to: { opacity: 1, x: 0 },
       duration: 1,
     },
-    registerAnimateIn,
+    scrollTrigger: {
+      trigger: photoRef.current || undefined,
+      start: 'top 80%',
+      toggleActions: 'play none none none',
+    },
   });
 
   useScrollAnimation({
@@ -52,20 +52,41 @@ const OurStorySection: React.FC<OurStorySectionProps> = ({
       duration: 1,
       delay: 0.2,
     },
-    registerAnimateIn,
+    scrollTrigger: {
+      trigger: cardRef.current || undefined,
+      start: 'top 80%',
+      toggleActions: 'play none none none',
+    },
+  });
+
+  useScrollAnimation({
+    ref: plateRef,
+    config: {
+      from: { rotation: 0 },
+      to: { rotation: 180 },
+      duration: 1,
+      ease: 'power1.inOut',
+      // delay: 0.4,
+    },
+    scrollTrigger: {
+      trigger: photoRef.current || undefined,
+      start: 'top 70%',
+      toggleActions: 'play none none none',
+      scrub: true, // Scrub animation to scroll position
+    },
   });
 
   return (
-    <div className="w-full h-full bg-bg flex items-center">
-      <div className="w-full h-full flex flex-col md:flex-row">
+    <div className="w-full min-h-screen flex items-center">
+      <div className="w-full h-full flex flex-col md:flex-row items-center justify-center">
         {/* Left — full-bleed photo */}
-        <div ref={photoRef} className="relative w-full md:w-1/2 h-64 md:h-full">
+        <div ref={photoRef} className="relative w-full md:w-1/2 h-64 md:h-full flex items-center justify-center ">
           <img
             src={image}
             alt={imageAlt}
-            className="w-full h-full object-cover"
+            ref={plateRef}
+            className="w-[55%] h-[55%] object-cover"
           />
-          <ImageOverlay opacity={0.3} />
         </div>
 
         {/* Right — ivory card overlapping photo */}

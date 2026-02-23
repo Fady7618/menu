@@ -32,14 +32,14 @@ const SectionHeading: React.FC<SectionHeadingProps> = ({
     <div className={`${alignmentClasses[align]} ${className}`}>
       {eyebrow && (
         <p 
-          className={`font-serif text-rust text-xl italic mb-4 ${eyebrowClassName}`}
+          className={`font-serif text-xl italic mb-4 ${eyebrowClassName}`}
           style={{ fontFamily: typography.fontFamily.serif }}
         >
           {eyebrow}
         </p>
       )}
       <h2
-        className={`font-display font-bold text-white leading-tight ${titleClassName}`}
+        className={`font-display font-bold leading-tight ${titleClassName}`}
         style={{ 
           fontSize: 'clamp(2rem, 4vw, 3rem)',
           fontFamily: typography.fontFamily.display,

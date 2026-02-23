@@ -5,22 +5,19 @@ import { EVENTS } from '../../../config/content';
 import type { Event } from '../../../config/content';
 
 interface EventsSectionProps {
-  sectionIndex: number;
-  registerAnimateIn?: (fn: () => void) => void;
   events?: readonly Event[];
 }
 
 /**
- * EventsSection - Refactored with DRY components
- * - Uses useScrollAnimation hook
- * - Uses SectionHeading component
+ * EventsSection - Refactored with ScrollTrigger
+ * - Removed sectionIndex and registerAnimateIn props
+ * - Uses ScrollTrigger for scroll-based animations
  * - Events come from config with prop override support
  */
 const EventsSection: React.FC<EventsSectionProps> = ({
-  sectionIndex: _sectionIndex,
-  registerAnimateIn,
   events = EVENTS,
 }) => {
+  const plateRef = useRef<HTMLImageElement>(null);
   const photoRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -31,7 +28,11 @@ const EventsSection: React.FC<EventsSectionProps> = ({
       to: { opacity: 1, x: 0 },
       duration: 1,
     },
-    registerAnimateIn,
+    scrollTrigger: {
+      trigger: photoRef.current || undefined,
+      start: 'top 80%',
+      toggleActions: 'play none none none',
+    },
   });
 
   useScrollAnimation({
@@ -42,23 +43,44 @@ const EventsSection: React.FC<EventsSectionProps> = ({
       duration: 1,
       delay: 0.2,
     },
-    registerAnimateIn,
+    scrollTrigger: {
+      trigger: cardRef.current || undefined,
+      start: 'top 80%',
+      toggleActions: 'play none none none',
+    },
+  });
+
+  useScrollAnimation({
+    ref: plateRef,
+    config: {
+      from: { rotation: 0 },
+      to: { rotation: 180 },
+      duration: 1,
+      ease: 'power1.inOut',
+      // delay: 0.4,
+    },
+    scrollTrigger: {
+      trigger: photoRef.current || undefined,
+      start: 'top 70%',
+      toggleActions: 'play none none none',
+      scrub: true, // Scrub animation to scroll position
+    },
   });
 
   return (
-    <div className="w-full h-full bg-bg flex items-center">
-      <div className="w-full h-full flex flex-col-reverse md:flex-row">
+    <div className="w-full min-h-screen flex items-center ">
+      <div className="w-full h-full flex flex-col-reverse md:flex-row ">
         {/* Left — ivory event card */}
         <div className="relative flex items-center justify-end md:w-1/2 px-0 md:px-12 py-12">
           <div
             ref={cardRef}
-            className="bg-ivory text-bg p-10 md:p-12 max-w-lg w-full shadow-2xl md:translate-x-16"
+            className="bg-rust text-bg p-10 md:p-12 max-w-lg w-full shadow-2xl md:translate-x-16"
           >
             <SectionHeading
               eyebrow="Upcoming Events"
               title={<>Reserve your<br />experience</>}
-              eyebrowClassName="text-rust mb-4"
-              titleClassName="text-bg mb-8"
+              eyebrowClassName="text-ivory mb-4"
+              titleClassName="text-ivory mb-8"
             />
             <div className="space-y-6">
               {events.map((event) => (
@@ -79,13 +101,13 @@ const EventsSection: React.FC<EventsSectionProps> = ({
         </div>
 
         {/* Right — Photo */}
-        <div ref={photoRef} className="relative w-full md:w-1/2 h-96 md:h-full">
+        <div ref={photoRef} className="relative w-full md:w-1/2 h-96 md:h-full flex self-center items-center justify-center">
           <img
-            src="https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=900&q=80&fit=crop"
+            src="public/pizza.png"
             alt="Special Events"
-            className="w-full h-full object-cover"
+            ref={plateRef}
+            className="w-[60%] h-[60%] object-cover"
           />
-          <div className="absolute inset-0 bg-bg/20" />
         </div>
       </div>
     </div>

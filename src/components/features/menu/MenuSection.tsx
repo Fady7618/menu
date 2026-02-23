@@ -1,7 +1,7 @@
-import React, { useRef, useEffect, useLayoutEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
-import { gsap } from '../../../utils/gsap';
+import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
 import { useMenu } from '../../../hooks/useMenu';
 import { homeCarouselConfig } from '../../../config/carousel';
 import { optimizeImageUrl, preloadImages } from '../../../utils/imageOptimization';
@@ -24,12 +24,14 @@ const PLATE_IMAGES = [
   'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&q=80&fit=crop',
 ];
 
-interface MenuSectionProps {
-  sectionIndex: number;
-  registerAnimateIn?: (fn: () => void) => void;
-}
+interface MenuSectionProps {}
 
-const MenuSection: React.FC<MenuSectionProps> = ({ sectionIndex, registerAnimateIn }) => {
+/**
+ * MenuSection - Refactored with ScrollTrigger
+ * - Removed sectionIndex and registerAnimateIn props
+ * - Uses useScrollAnimation with ScrollTrigger
+ */
+const MenuSection: React.FC<MenuSectionProps> = () => {
   const { data: items } = useMenu({ availableOnly: true });
   const sectionRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -47,29 +49,37 @@ const MenuSection: React.FC<MenuSectionProps> = ({ sectionIndex, registerAnimate
     }
   }, [displayed]);
 
-  useLayoutEffect(() => {
-    gsap.set(headingRef.current, { opacity: 0, y: 30 });
-    gsap.set(carouselRef.current, { opacity: 0, y: 50 });
-  }, []);
+  useScrollAnimation({
+    ref: headingRef,
+    config: {
+      from: { opacity: 0, y: 30 },
+      to: { opacity: 1, y: 0 },
+      duration: 0.8,
+    },
+    scrollTrigger: {
+      trigger: headingRef.current || undefined,
+      start: 'top 80%',
+      toggleActions: 'play none none none',
+    },
+  });
 
-  useEffect(() => {
-    const animateIn = () => {
-      gsap.fromTo(
-        headingRef.current,
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }
-      );
-      gsap.fromTo(
-        carouselRef.current,
-        { opacity: 0, y: 50 },
-        { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out', delay: 0.3 }
-      );
-    };
-    registerAnimateIn?.(animateIn);
-  }, [registerAnimateIn]);
+  useScrollAnimation({
+    ref: carouselRef,
+    config: {
+      from: { opacity: 0, y: 50 },
+      to: { opacity: 1, y: 0 },
+      duration: 0.9,
+      delay: 0.3,
+    },
+    scrollTrigger: {
+      trigger: carouselRef.current || undefined,
+      start: 'top 80%',
+      toggleActions: 'play none none none',
+    },
+  });
 
   return (
-    <div ref={sectionRef} className="w-full h-full bg-bg overflow-hidden relative flex flex-col">
+    <div ref={sectionRef} className="w-full min-h-screen overflow-hidden relative flex flex-col">
       {/* Heading */}
       <div className="pt-14 pb-8 text-center z-10">
         <p className="font-serif text-rust text-xl italic mb-2">Curated for you</p>
@@ -84,7 +94,7 @@ const MenuSection: React.FC<MenuSectionProps> = ({ sectionIndex, registerAnimate
 
       {/* Carousel */}
       <div ref={carouselRef} className="flex-1 flex items-center px-4 md:px-8 lg:px-16">
-        <div className="w-full">
+        <div className="w-full py-4">
           <Swiper
             {...homeCarouselConfig}
             modules={[Autoplay, Pagination, Navigation]}
@@ -98,13 +108,13 @@ const MenuSection: React.FC<MenuSectionProps> = ({ sectionIndex, registerAnimate
                 <SwiperSlide key={item.id} className="pb-12">
                   <div className="flex flex-col items-center">
                     {/* Circular plate image */}
-                    <div className="relative w-48 h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 rounded-full overflow-hidden shadow-2xl group">
+                    <div className="relative w-48 h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 rounded-full overflow-hidden shadow-2xl transition-all delay-50 duration-300 ease-in-out hover:scale-[0.95]">
                       <LazyLoadImage
                         src={optimizedSrc}
                         alt={item.name}
                         effect="blur"
                         threshold={200}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        className="w-full h-full object-cover"
                         wrapperClassName="w-full h-full"
                         loading={index < 3 ? 'eager' : 'lazy'}
                       />

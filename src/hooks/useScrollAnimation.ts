@@ -24,19 +24,28 @@ interface AnimationConfig {
   ease?: string;
 }
 
+interface ScrollTriggerConfig {
+  trigger?: string | HTMLElement;
+  start?: string;
+  end?: string;
+  scrub?: boolean | number;
+  toggleActions?: string;
+  markers?: boolean;
+}
+
 interface UseScrollAnimationOptions {
-  ref: RefObject<HTMLElement | null>;  // Changed: accept null
+  ref: RefObject<HTMLElement | null>;
   config: AnimationConfig;
   registerAnimateIn?: (fn: () => void) => void;
+  scrollTrigger?: ScrollTriggerConfig;
 }
 
 /**
  * useScrollAnimation - Centralized GSAP scroll animation hook
  * 
- * Eliminates duplicated animation code across all section components
- * by providing a consistent pattern for scroll-triggered animations.
+ * Supports both manual triggering (via registerAnimateIn) and ScrollTrigger-based animations
  * 
- * Usage:
+ * Usage with ScrollTrigger:
  * ```tsx
  * const cardRef = useRef<HTMLDivElement>(null);
  * useScrollAnimation({
@@ -47,7 +56,11 @@ interface UseScrollAnimationOptions {
  *     duration: 1,
  *     ease: 'power3.out',
  *   },
- *   registerAnimateIn,
+ *   scrollTrigger: {
+ *     trigger: cardRef.current,
+ *     start: 'top 80%',
+ *     toggleActions: 'play none none none',
+ *   },
  * });
  * ```
  */
@@ -55,6 +68,7 @@ export const useScrollAnimation = ({
   ref,
   config,
   registerAnimateIn,
+  scrollTrigger,
 }: UseScrollAnimationOptions): void => {
   const {
     from,
@@ -70,14 +84,13 @@ export const useScrollAnimation = ({
     gsap.set(ref.current, from);
   }, [ref, from]);
 
-  // Register animation function with parent controller
+  // Setup animation - either with ScrollTrigger or manual registration
   useEffect(() => {
-    if (!ref.current || !registerAnimateIn) return;
+    if (!ref.current) return;
 
-    const animateIn = () => {
-      if (!ref.current) return;
-      
-      gsap.fromTo(
+    // ScrollTrigger mode (new behavior)
+    if (scrollTrigger) {
+      const animation = gsap.fromTo(
         ref.current,
         from,
         {
@@ -85,18 +98,49 @@ export const useScrollAnimation = ({
           duration,
           delay,
           ease,
+          scrollTrigger: {
+            trigger: scrollTrigger.trigger || ref.current,
+            start: scrollTrigger.start || 'top 80%',
+            end: scrollTrigger.end,
+            scrub: scrollTrigger.scrub,
+            toggleActions: scrollTrigger.toggleActions || 'play none none none',
+            markers: scrollTrigger.markers || false,
+          },
         }
       );
-    };
 
-    registerAnimateIn(animateIn);
-  }, [ref, registerAnimateIn, from, to, duration, delay, ease]);
+      return () => {
+        animation.scrollTrigger?.kill();
+        animation.kill();
+      };
+    }
+
+    // Manual registration mode (legacy behavior)
+    if (registerAnimateIn) {
+      const animateIn = () => {
+        if (!ref.current) return;
+        
+        gsap.fromTo(
+          ref.current,
+          from,
+          {
+            ...to,
+            duration,
+            delay,
+            ease,
+          }
+        );
+      };
+
+      registerAnimateIn(animateIn);
+    }
+  }, [ref, registerAnimateIn, from, to, duration, delay, ease, scrollTrigger]);
 };
 
 /**
  * useScrollAnimationMultiple - Animate multiple elements with staggered timing
  * 
- * Usage:
+ * Usage with ScrollTrigger:
  * ```tsx
  * const refs = [ref1, ref2, ref3];
  * useScrollAnimationMultiple({
@@ -106,20 +150,25 @@ export const useScrollAnimation = ({
  *     to: { opacity: 1, y: 0 },
  *     stagger: 0.2,
  *   },
- *   registerAnimateIn,
+ *   scrollTrigger: {
+ *     trigger: containerRef.current,
+ *     start: 'top 80%',
+ *   },
  * });
  * ```
  */
 interface UseScrollAnimationMultipleOptions {
-  refs: RefObject<HTMLElement | null>[];  // Changed: accept null
+  refs: RefObject<HTMLElement | null>[];
   config: AnimationConfig & { stagger?: number };
   registerAnimateIn?: (fn: () => void) => void;
+  scrollTrigger?: ScrollTriggerConfig;
 }
 
 export const useScrollAnimationMultiple = ({
   refs,
   config,
   registerAnimateIn,
+  scrollTrigger,
 }: UseScrollAnimationMultipleOptions): void => {
   const {
     from,
@@ -139,18 +188,17 @@ export const useScrollAnimationMultiple = ({
     });
   }, [refs, from]);
 
-  // Register staggered animation
+  // Setup animation
   useEffect(() => {
-    if (!registerAnimateIn) return;
+    const elements = refs
+      .map((ref) => ref.current)
+      .filter((el) => el !== null);
 
-    const animateIn = () => {
-      const elements = refs
-        .map((ref) => ref.current)
-        .filter((el) => el !== null);
+    if (elements.length === 0) return;
 
-      if (elements.length === 0) return;
-
-      gsap.fromTo(
+    // ScrollTrigger mode
+    if (scrollTrigger) {
+      const animation = gsap.fromTo(
         elements,
         from,
         {
@@ -159,12 +207,42 @@ export const useScrollAnimationMultiple = ({
           delay,
           ease,
           stagger,
+          scrollTrigger: {
+            trigger: scrollTrigger.trigger || elements[0],
+            start: scrollTrigger.start || 'top 80%',
+            end: scrollTrigger.end,
+            scrub: scrollTrigger.scrub,
+            toggleActions: scrollTrigger.toggleActions || 'play none none none',
+            markers: scrollTrigger.markers || false,
+          },
         }
       );
-    };
 
-    registerAnimateIn(animateIn);
-  }, [refs, registerAnimateIn, from, to, duration, delay, ease, stagger]);
+      return () => {
+        animation.scrollTrigger?.kill();
+        animation.kill();
+      };
+    }
+
+    // Manual registration mode
+    if (registerAnimateIn) {
+      const animateIn = () => {
+        gsap.fromTo(
+          elements,
+          from,
+          {
+            ...to,
+            duration,
+            delay,
+            ease,
+            stagger,
+          }
+        );
+      };
+
+      registerAnimateIn(animateIn);
+    }
+  }, [refs, registerAnimateIn, from, to, duration, delay, ease, stagger, scrollTrigger]);
 };
 
 /**
@@ -172,19 +250,22 @@ export const useScrollAnimationMultiple = ({
  * 
  * For components that need sequential or overlapping animations
  * 
- * Usage:
+ * Usage with ScrollTrigger:
  * ```tsx
  * useTimelineAnimation({
  *   steps: [
  *     { ref: headingRef, from: { opacity: 0, y: 40 }, to: { opacity: 1, y: 0 }, duration: 0.8 },
  *     { ref: subRef, from: { opacity: 0, y: 20 }, to: { opacity: 1, y: 0 }, duration: 0.6, position: '-=0.4' },
  *   ],
- *   registerAnimateIn,
+ *   scrollTrigger: {
+ *     trigger: containerRef.current,
+ *     start: 'top 80%',
+ *   },
  * });
  * ```
  */
 interface TimelineStep {
-  ref: RefObject<HTMLElement | null>;  // Changed: accept null
+  ref: RefObject<HTMLElement | null>;
   from: Record<string, any>;
   to: Record<string, any>;
   duration?: number;
@@ -197,6 +278,7 @@ interface UseTimelineAnimationOptions {
   registerAnimateIn?: (fn: () => void) => void;
   autoPlay?: boolean;
   autoPlayDelay?: number;
+  scrollTrigger?: ScrollTriggerConfig;
 }
 
 export const useTimelineAnimation = ({
@@ -204,6 +286,7 @@ export const useTimelineAnimation = ({
   registerAnimateIn,
   autoPlay = false,
   autoPlayDelay = 500,
+  scrollTrigger,
 }: UseTimelineAnimationOptions): void => {
   // Set initial states
   useLayoutEffect(() => {
@@ -216,8 +299,21 @@ export const useTimelineAnimation = ({
 
   // Create and register timeline
   useEffect(() => {
-    const animateIn = () => {
-      const tl = gsap.timeline();
+    const createTimeline = () => {
+      const tl = gsap.timeline(
+        scrollTrigger
+          ? {
+              scrollTrigger: {
+                trigger: scrollTrigger.trigger,
+                start: scrollTrigger.start || 'top 80%',
+                end: scrollTrigger.end,
+                scrub: scrollTrigger.scrub,
+                toggleActions: scrollTrigger.toggleActions || 'play none none none',
+                markers: scrollTrigger.markers || false,
+              },
+            }
+          : {}
+      );
 
       steps.forEach(({ ref, from, to, duration = 1, ease = 'power3.out', position }) => {
         if (!ref.current) return;
@@ -233,15 +329,32 @@ export const useTimelineAnimation = ({
           position
         );
       });
+
+      return tl;
     };
 
+    // ScrollTrigger mode
+    if (scrollTrigger) {
+      const tl = createTimeline();
+      return () => {
+        tl.scrollTrigger?.kill();
+        tl.kill();
+      };
+    }
+
+    // Auto-play mode
     if (autoPlay) {
-      const timer = setTimeout(animateIn, autoPlayDelay);
+      const timer = setTimeout(() => {
+        createTimeline();
+      }, autoPlayDelay);
       return () => clearTimeout(timer);
     }
 
-    registerAnimateIn?.(animateIn);
-  }, [steps, registerAnimateIn, autoPlay, autoPlayDelay]);
+    // Manual registration mode
+    if (registerAnimateIn) {
+      registerAnimateIn(createTimeline);
+    }
+  }, [steps, registerAnimateIn, autoPlay, autoPlayDelay, scrollTrigger]);
 };
 
 export default useScrollAnimation;

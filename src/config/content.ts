@@ -60,7 +60,7 @@ export const STORY_CONTENT = {
     'In 2009, chef Marcus Reyes converted a forgotten rail-yard warehouse on the edge of the city into what would become the most talked-about dining room in the region.',
     'Sixteen years later, The Ember & Oak holds two Michelin stars and remains exactly as it began — a single open kitchen, a hardwood fire, and a team of cooks who believe the best meal you\'ve ever had is still ahead of you.',
   ],
-  image: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=900&q=80&fit=crop',
+  image: 'public/photo-1546069901-ba9599a7e63c-removebg-preview.png',
   imageAlt: 'Restaurant atmosphere',
 } as const;
 

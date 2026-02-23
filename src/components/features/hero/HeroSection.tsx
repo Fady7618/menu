@@ -4,7 +4,6 @@ import { useTimelineAnimation } from '../../../hooks/useScrollAnimation';
 import { HERO_CONTENT } from '../../../config/content';
 
 interface HeroSectionProps {
-  registerAnimateIn?: (fn: () => void) => void;
   title?: string;
   subtitle?: string;
   eyebrow?: string;
@@ -12,10 +11,10 @@ interface HeroSectionProps {
 }
 
 /**
- * HeroSection - Refactored to use config and remove dead code
- * - Removed unused INGREDIENTS array and floatRefs
+ * HeroSection - Refactored to use ScrollTrigger
+ * - Removed registerAnimateIn prop (uses ScrollTrigger now)
  * - Content comes from config with prop overrides
- * - Uses useTimelineAnimation instead of manual GSAP
+ * - Uses useTimelineAnimation with ScrollTrigger
  */
 const HeroSection: React.FC<HeroSectionProps> = ({
   title = HERO_CONTENT.title,
@@ -23,6 +22,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   eyebrow = HERO_CONTENT.eyebrow,
   ctaButtons = HERO_CONTENT.ctaButtons,
 }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const eyebrowRef = useRef<HTMLParagraphElement>(null);
   const subRef = useRef<HTMLParagraphElement>(null);
@@ -66,21 +66,16 @@ const HeroSection: React.FC<HeroSectionProps> = ({
         position: '-=0.8',
       },
     ],
-    autoPlay: true,
-    autoPlayDelay: 500,
+    scrollTrigger: {
+      trigger: containerRef.current || undefined,
+      start: 'top 80%',
+      toggleActions: 'play none none none',
+    },
   });
 
   return (
-    <div className="w-full h-full bg-bg flex items-center justify-center overflow-hidden relative">
-      {/* Particle dots background */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px)',
-          backgroundSize: '40px 40px',
-          opacity: 0.5,
-        }}
-      />
+    <div ref={containerRef} className="w-full min-h-screen flex items-center justify-center overflow-hidden relative">
+      
 
       <div className="relative z-10 w-full max-w-7xl mx-auto px-8 md:px-16 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
         {/* Left column */}
@@ -130,7 +125,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
       </div>
 
       {/* Bottom gradient fade */}
-      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-bg to-transparent pointer-events-none" />
+      {/* <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-bg to-transparent pointer-events-none" /> */}
     </div>
   );
 };
