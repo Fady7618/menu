@@ -4,7 +4,6 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Virtual } from 'swiper/modules';
 import MenuItemCard from '../../components/features/menu/MenuItemCard';
 import SkeletonCard from '../../components/common/loader/SkeletonCard';
-import Loader from '../../components/common/loader/Loader';
 import { useMenu } from '../../hooks/useMenu';
 import { getCategories } from '../../services/menuService';
 import { menuCategoryCarouselConfig, virtualCarouselConfig, performanceConfig } from '../../config/carousel';
