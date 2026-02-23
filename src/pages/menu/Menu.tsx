@@ -22,11 +22,23 @@ const Menu: React.FC = () => {
   const navigate = useNavigate();
   const [categories, setCategories] = useState<MenuCategory[]>([]);
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set());
+  const [isMobile, setIsMobile] = useState(false);
 
   const { data: items, loading, error } = useMenu({
     category,
     availableOnly: true,
   });
+
+  // Detect mobile screen size
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     getCategories().then(setCategories).catch(console.error);
@@ -75,32 +87,34 @@ const Menu: React.FC = () => {
         </h1>
       </div>
 
-      {/* Category tabs */}
+      {/* Category tabs - Horizontal scroll on mobile, flex wrap on desktop */}
       {categories.length > 0 && (
-        <div className="max-w-7xl mx-auto mb-12 flex flex-wrap gap-3">
-          <button
-            onClick={() => navigate('/menu')}
-            className={`px-5 py-2 text-xs uppercase tracking-[0.2em] font-sans border transition-all duration-200 ${
-              !category
-                ? 'border-rust text-rust'
-                : 'border-white/20 text-white/50 hover:border-white/60 hover:text-white'
-            }`}
-          >
-            All
-          </button>
-          {categories.map((cat) => (
+        <div className="max-w-7xl mx-auto mb-12">
+          <div className="flex md:flex-wrap gap-3 overflow-x-auto pb-2 md:pb-0 scrollbar-hide">
             <button
-              key={cat.name}
-              onClick={() => navigate(`/menu/${encodeURIComponent(cat.name)}`)}
-              className={`px-5 py-2 text-xs uppercase tracking-[0.2em] font-sans border transition-all duration-200 ${
-                category === cat.name
+              onClick={() => navigate('/menu')}
+              className={`px-5 py-2 text-xs uppercase tracking-[0.2em] font-sans border transition-all duration-200 whitespace-nowrap flex-shrink-0 ${
+                !category
                   ? 'border-rust text-rust'
                   : 'border-white/20 text-white/50 hover:border-white/60 hover:text-white'
               }`}
             >
-              {cat.name} <span className="text-white/30 ml-1">({cat.count})</span>
+              All
             </button>
-          ))}
+            {categories.map((cat) => (
+              <button
+                key={cat.name}
+                onClick={() => navigate(`/menu/${encodeURIComponent(cat.name)}`)}
+                className={`px-5 py-2 text-xs uppercase tracking-[0.2em] font-sans border transition-all duration-200 whitespace-nowrap flex-shrink-0 ${
+                  category === cat.name
+                    ? 'border-rust text-rust'
+                    : 'border-white/20 text-white/50 hover:border-white/60 hover:text-white'
+                }`}
+              >
+                {cat.name} <span className="text-white/30 ml-1">({cat.count})</span>
+              </button>
+            ))}
+          </div>
         </div>
       )}
 
@@ -128,21 +142,22 @@ const Menu: React.FC = () => {
         </div>
       )}
 
-      {/* Category Carousels */}
+      {/* Category Carousels/Grids */}
       {!loading && !error && items && items.length > 0 && (
         <div className="max-w-7xl mx-auto space-y-16">
           {category ? (
-            // Single category view - use carousel
+            // Single category view
             <div>
               <CategoryCarousel
                 categoryName={category}
                 items={items}
                 expanded={expandedCategories.has(category)}
                 onToggle={() => toggleCategory(category)}
+                isMobile={isMobile}
               />
             </div>
           ) : (
-            // All categories view - carousel for each
+            // All categories view
             Array.from(itemsByCategory.entries()).map(([catName, catItems]) => (
               <div key={catName}>
                 <CategoryCarousel
@@ -150,6 +165,7 @@ const Menu: React.FC = () => {
                   items={catItems}
                   expanded={expandedCategories.has(catName)}
                   onToggle={() => toggleCategory(catName)}
+                  isMobile={isMobile}
                 />
               </div>
             ))
@@ -157,7 +173,7 @@ const Menu: React.FC = () => {
         </div>
       )}
 
-      {/* Custom carousel navigation styling */}
+      {/* Custom carousel navigation styling + Hide scrollbar */}
       <style>{`
         .category-carousel .swiper-button-next,
         .category-carousel .swiper-button-prev {
@@ -187,6 +203,15 @@ const Menu: React.FC = () => {
         .category-carousel .swiper-button-disabled {
           opacity: 0.3;
         }
+        
+        /* Hide scrollbar but keep functionality */
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
       `}</style>
     </div>
   );
@@ -197,16 +222,18 @@ interface CategoryCarouselProps {
   items: MenuItem[];
   expanded: boolean;
   onToggle: () => void;
+  isMobile: boolean;
 }
 
 const CategoryCarousel: React.FC<CategoryCarouselProps> = React.memo(
-  ({ categoryName, items, expanded, onToggle }) => {
+  ({ categoryName, items, expanded, onToggle, isMobile }) => {
     const itemCount = items.length;
     const useVirtual = itemCount >= performanceConfig.virtualThreshold;
     const config = useVirtual ? virtualCarouselConfig : menuCategoryCarouselConfig;
 
-    // Show limited items or all based on expanded state
-    const displayItems = expanded ? items : items.slice(0, 12);
+    // On mobile, always show grid. On desktop, respect expanded state
+    const showGrid = isMobile || expanded;
+    const displayItems = showGrid ? items : items.slice(0, 12);
     const hasMore = itemCount > 12;
 
     return (
@@ -217,7 +244,8 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = React.memo(
             {categoryName}
             <span className="text-white/40 text-lg ml-3">({itemCount})</span>
           </h2>
-          {hasMore && (
+          {/* Show "View All" button only on desktop when there are more items */}
+          {hasMore && !isMobile && (
             <button
               onClick={onToggle}
               className="text-rust text-sm font-sans uppercase tracking-wider hover:text-white transition-colors"
@@ -227,16 +255,16 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = React.memo(
           )}
         </div>
 
-        {/* Carousel or Grid based on state */}
-        {expanded ? (
-          // Expanded: Show all in grid
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {items.map((item, index) => (
+        {/* Grid on mobile, Carousel or Grid on desktop based on expanded state */}
+        {showGrid ? (
+          // Grid view (mobile always, desktop when expanded)
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+            {displayItems.map((item, index) => (
               <MenuItemCard key={item.id} item={item} priority={index < 4} />
             ))}
           </div>
         ) : (
-          // Collapsed: Show carousel
+          // Carousel view (desktop only when not expanded)
           <Swiper
             {...config}
             modules={useVirtual ? [Navigation, Pagination, Virtual] : [Navigation, Pagination]}

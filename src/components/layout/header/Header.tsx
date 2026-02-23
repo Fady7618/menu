@@ -65,7 +65,7 @@ const Header: React.FC = () => {
 
       {/* Mobile full-screen drawer */}
       <div
-        className={`fixed inset-0 z-[200] bg-bg flex flex-col items-center justify-center transition-opacity duration-500 ${
+        className={`fixed inset-0 z-[200] bg-bg p-6 flex flex-col items-center justify-center transition-opacity duration-500 ${
           drawerOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
       >
@@ -78,14 +78,14 @@ const Header: React.FC = () => {
           ✕
         </button>
 
-        <BrandLogo size="lg" className="mb-16" />
+        <BrandLogo size="md" className="mb-16" />
 
         <nav className="flex flex-col items-center gap-8">
           {NAV_ITEMS.map((item) => (
             <Link
               key={item.path}
               to={item.path}
-              className="font-display text-3xl text-white hover:text-rust transition-colors duration-200"
+              className="font-display text-xl text-white hover:text-rust transition-colors duration-200"
             >
               {item.label}
             </Link>

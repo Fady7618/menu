@@ -28,7 +28,7 @@ const MenuItemCard: React.FC<MenuItemCardProps> = React.memo(({ item, priority =
           effect="blur"
           placeholderSrc={generateBlurPlaceholder()}
           threshold={300}
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          className="w-full h-full object-cover scale-100 hover:scale-105 ease-in-out transition-all duration-300"
           wrapperClassName="w-full h-full"
           loading={priority ? 'eager' : 'lazy'}
         />

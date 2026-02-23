@@ -165,7 +165,7 @@ export const shadows = {
  */
 export const buttonVariants = {
   primary: {
-    base: 'inline-block border border-white text-white bg-transparent px-8 py-3 uppercase tracking-widest text-xs font-medium transition-all duration-300 hover:bg-white hover:text-bg cursor-pointer',
+    base: 'inline-block border border-white text-white bg-transparent px-8 py-3 uppercase tracking-widest text-xs font-medium transition-all duration-300 hover:bg-white hover:text-bg cursor-pointer text-center',
     fontFamily: typography.fontFamily.sans,
     fontWeight: typography.fontWeight.medium,
     letterSpacing: typography.letterSpacing.widest,
@@ -173,7 +173,7 @@ export const buttonVariants = {
   },
   
   secondary: {
-    base: 'inline-block border border-rust text-rust bg-transparent px-8 py-3 uppercase tracking-widest text-xs font-medium transition-all duration-300 hover:bg-rust hover:text-white cursor-pointer',
+    base: 'inline-block border border-rust text-rust bg-transparent px-8 py-3 uppercase tracking-widest text-xs font-medium transition-all duration-300 hover:bg-rust hover:text-white cursor-pointer text-center',
     fontFamily: typography.fontFamily.sans,
     fontWeight: typography.fontWeight.medium,
     letterSpacing: typography.letterSpacing.widest,
@@ -181,7 +181,7 @@ export const buttonVariants = {
   },
   
   ghost: {
-    base: 'inline-block text-white bg-transparent px-6 py-2 uppercase tracking-wider text-xs font-medium transition-colors duration-300 hover:text-rust cursor-pointer',
+    base: 'inline-block text-white bg-transparent px-6 py-2 uppercase tracking-wider text-xs font-medium transition-colors duration-300 hover:text-rust cursor-pointer text-center',
     fontFamily: typography.fontFamily.sans,
     fontWeight: typography.fontWeight.medium,
     letterSpacing: typography.letterSpacing.wider,
