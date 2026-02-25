@@ -7,7 +7,7 @@ import { NAV_ITEMS } from '../../../config/nav';
 const Header: React.FC = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const location = useLocation();
-
+  
   // Close drawer on route change
   useEffect(() => {
     setDrawerOpen(false);
@@ -66,7 +66,7 @@ const Header: React.FC = () => {
 
       {/* Mobile full-screen drawer */}
       <div
-        className={`fixed inset-0 z-[200] bg-bg p-6 flex flex-col items-center justify-center transition-opacity duration-500 ${
+        className={`fixed inset-0 z-200 bg-bg p-6 flex flex-col items-center justify-center transition-opacity duration-500 ${
           drawerOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
       >

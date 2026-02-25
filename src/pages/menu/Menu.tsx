@@ -40,7 +40,12 @@ const Menu: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    getCategories().then(setCategories).catch(console.error);
+    getCategories()
+      .then(setCategories)
+      .catch((err) => {
+        // Could set error state here
+        console.warn('Failed to load categories:', err);
+      });
   }, []);
 
   // Group items by category
@@ -92,7 +97,7 @@ const Menu: React.FC = () => {
           <div className="flex md:flex-wrap gap-3 overflow-x-auto pb-2 md:pb-0 scrollbar-hide">
             <button
               onClick={() => navigate('/menu')}
-              className={`px-5 py-2 text-xs uppercase tracking-[0.2em] font-sans border transition-all duration-200 whitespace-nowrap flex-shrink-0 ${
+              className={`px-5 py-2 text-xs uppercase tracking-[0.2em] font-sans border transition-all duration-200 whitespace-nowrap shrink-0 ${
                 !category
                   ? 'border-rust text-rust'
                   : 'border-white/20 text-white/50 hover:border-white/60 hover:text-white'
@@ -104,7 +109,7 @@ const Menu: React.FC = () => {
               <button
                 key={cat.name}
                 onClick={() => navigate(`/menu/${encodeURIComponent(cat.name)}`)}
-                className={`px-5 py-2 text-xs uppercase tracking-[0.2em] font-sans border transition-all duration-200 whitespace-nowrap flex-shrink-0 ${
+                className={`px-5 py-2 text-xs uppercase tracking-[0.2em] font-sans border transition-all duration-200 whitespace-nowrap shrink-0 ${
                   category === cat.name
                     ? 'border-rust text-rust'
                     : 'border-white/20 text-white/50 hover:border-white/60 hover:text-white'

@@ -68,7 +68,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({
       },
     ],
     scrollTrigger: {
-      trigger: containerRef.current || undefined,
       start: 'top 80%',
       toggleActions: 'play none none none',
     },

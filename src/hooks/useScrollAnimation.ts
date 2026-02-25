@@ -266,8 +266,8 @@ export const useScrollAnimationMultiple = ({
  */
 interface TimelineStep {
   ref: RefObject<HTMLElement | null>;
-  from: Record<string, any>;
-  to: Record<string, any>;
+  from: Record<string, string | number | boolean>;
+  to: Record<string, string | number | boolean>;
   duration?: number;
   ease?: string;
   position?: string; // GSAP timeline position parameter

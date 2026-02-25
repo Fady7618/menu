@@ -60,13 +60,12 @@ const OurStorySection: React.FC<OurStorySectionProps> = ({
     ref: plateRef,
     config: {
       from: { rotation: 0 },
-      to: { rotation: 180 },
+      to: { rotation: 90 },
       duration: 1,
       ease: 'power1.inOut',
       // delay: 0.4,
     },
     scrollTrigger: {
-      trigger: photoRef.current || undefined,
       start: 'top 70%',
       toggleActions: 'play none none none',
       scrub: true, // Scrub animation to scroll position

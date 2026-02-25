@@ -13,6 +13,7 @@ import 'react-lazy-load-image-component/src/effects/blur.css';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+import { Link } from 'react-router-dom';
 
 /**
  * MenuSection - Refactored with ScrollTrigger
@@ -134,12 +135,12 @@ const MenuSection: React.FC = () => {
 
       {/* CTA */}
       <div className="pb-12 flex justify-center z-10">
-        <a
-          href="/menu"
+        <Link
+          to="/menu"
           className="border border-white text-white bg-transparent px-8 py-3 uppercase tracking-[0.2em] text-xs font-sans hover:bg-white hover:text-bg transition-all duration-300"
         >
           Full Menu
-        </a>
+        </Link>
       </div>
 
       {/* Custom pagination styling */}

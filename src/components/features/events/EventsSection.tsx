@@ -29,7 +29,6 @@ const EventsSection: React.FC<EventsSectionProps> = ({
       duration: 1,
     },
     scrollTrigger: {
-      trigger: photoRef.current || undefined,
       start: 'top 80%',
       toggleActions: 'play none none none',
     },
@@ -44,7 +43,6 @@ const EventsSection: React.FC<EventsSectionProps> = ({
       delay: 0.2,
     },
     scrollTrigger: {
-      trigger: cardRef.current || undefined,
       start: 'top 80%',
       toggleActions: 'play none none none',
     },
@@ -54,13 +52,12 @@ const EventsSection: React.FC<EventsSectionProps> = ({
     ref: plateRef,
     config: {
       from: { rotation: 0 },
-      to: { rotation: 180 },
+      to: { rotation: 90 },
       duration: 1,
       ease: 'power1.inOut',
       // delay: 0.4,
     },
     scrollTrigger: {
-      trigger: photoRef.current || undefined,
       start: 'top 70%',
       toggleActions: 'play none none none',
       scrub: true, // Scrub animation to scroll position
