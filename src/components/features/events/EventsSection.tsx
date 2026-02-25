@@ -106,7 +106,7 @@ const EventsSection: React.FC<EventsSectionProps> = ({
             src="pizza.png"
             alt="Special Events"
             ref={plateRef}
-            className="w-[60%] h-[60%] object-cover"
+            className="w-[70%] h-auto md:w-[60%] md:h-[60%] object-cover"
           />
         </div>
       </div>
