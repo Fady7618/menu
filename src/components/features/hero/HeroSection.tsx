@@ -147,7 +147,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
       </div>
 
       {/* Bottom gradient fade */}
-      <div className="absolute bottom-0 left-0 w-full h-20 md:h-32 bg-gradient-to-t from-bg to-transparent pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-full h-20 md:h-32 bg-linear-to-t from-bg to-transparent pointer-events-none" />
     </div>
   );
 };

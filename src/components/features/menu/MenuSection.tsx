@@ -14,14 +14,12 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 
-interface MenuSectionProps {}
-
 /**
  * MenuSection - Refactored with ScrollTrigger
  * - Removed sectionIndex and registerAnimateIn props
  * - Uses useScrollAnimation with ScrollTrigger
  */
-const MenuSection: React.FC<MenuSectionProps> = () => {
+const MenuSection: React.FC = () => {
   const { data: items } = useMenu({ availableOnly: true });
   const sectionRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -47,7 +45,7 @@ const MenuSection: React.FC<MenuSectionProps> = () => {
       duration: 0.8,
     },
     scrollTrigger: {
-      trigger: headingRef.current || undefined,
+      // trigger removed - hook uses ref.current automatically
       start: 'top 80%',
       toggleActions: 'play none none none',
     },
@@ -62,7 +60,7 @@ const MenuSection: React.FC<MenuSectionProps> = () => {
       delay: 0.3,
     },
     scrollTrigger: {
-      trigger: carouselRef.current || undefined,
+      // trigger removed
       start: 'top 80%',
       toggleActions: 'play none none none',
     },
@@ -108,7 +106,7 @@ const MenuSection: React.FC<MenuSectionProps> = () => {
                         wrapperClassName="w-full h-full"
                         loading={index < 3 ? 'eager' : 'lazy'}
                       />
-                      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/30 pointer-events-none" />
+                      <div className="absolute inset-0 bg-linear-to-b from-transparent to-black/30 pointer-events-none" />
                     </div>
 
                     {/* Item info */}

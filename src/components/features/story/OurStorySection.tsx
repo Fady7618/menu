@@ -16,7 +16,6 @@ interface OurStorySectionProps {
  * OurStorySection - Refactored with ScrollTrigger
  * - Removed sectionIndex and registerAnimateIn props
  * - Uses ScrollTrigger for scroll-based animations
- * - Uses SectionHeading and ImageOverlay components
  * - Content comes from config
  */
 const OurStorySection: React.FC<OurStorySectionProps> = ({
@@ -38,7 +37,6 @@ const OurStorySection: React.FC<OurStorySectionProps> = ({
       duration: 1,
     },
     scrollTrigger: {
-      trigger: photoRef.current || undefined,
       start: 'top 80%',
       toggleActions: 'play none none none',
     },
@@ -53,7 +51,6 @@ const OurStorySection: React.FC<OurStorySectionProps> = ({
       delay: 0.2,
     },
     scrollTrigger: {
-      trigger: cardRef.current || undefined,
       start: 'top 80%',
       toggleActions: 'play none none none',
     },

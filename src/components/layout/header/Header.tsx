@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import BrandLogo from '../../common/brand/BrandLogo';
+
 import { NAV_ITEMS } from '../../../config/nav';
 
 const Header: React.FC = () => {
@@ -20,7 +21,7 @@ const Header: React.FC = () => {
 
   return (
     <>
-      <header className="fixed top-0 left-0 w-full z-[100] px-8 py-5 flex items-center justify-between">
+      <header className="fixed top-0 left-0 w-full z-100 px-8 py-5 flex items-center justify-between">
         {/* Left — logo */}
         <BrandLogo size="sm" />
 
@@ -52,7 +53,7 @@ const Header: React.FC = () => {
 
           {/* Hamburger — mobile only */}
           <button
-            className="md:hidden flex flex-col gap-[5px] p-1"
+            className="md:hidden flex flex-col gap-1.25 p-1"
             onClick={() => setDrawerOpen(true)}
             aria-label="Open menu"
           >

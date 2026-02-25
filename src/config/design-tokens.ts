@@ -190,40 +190,6 @@ export const buttonVariants = {
 } as const;
 
 /**
- * Card variants - defines card component styles
- */
-export const cardVariants = {
-  default: {
-    background: 'rgba(245, 240, 235, 0.05)',
-    border: '1px solid rgba(245, 240, 235, 0.1)',
-    borderRadius: borderRadius['2xl'],
-    padding: spacing[8],
-    transition: `all ${transitions.duration.normal} ${transitions.easing.easeInOut}`,
-    hover: {
-      background: 'rgba(245, 240, 235, 0.08)',
-      transform: 'translateY(-4px)',
-      boxShadow: shadows.xl,
-    },
-  },
-  
-  glass: {
-    background: 'rgba(255, 255, 255, 0.05)',
-    backdropFilter: 'blur(10px)',
-    border: '1px solid rgba(255, 255, 255, 0.1)',
-    borderRadius: borderRadius['2xl'],
-    padding: spacing[8],
-  },
-  
-  solid: {
-    background: colors.ivory,
-    color: colors.bg,
-    borderRadius: borderRadius['2xl'],
-    padding: spacing[8],
-    boxShadow: shadows.md,
-  },
-} as const;
-
-/**
  * Animation presets
  */
 export const animations = {
@@ -263,4 +229,3 @@ export type ColorKey = keyof typeof colors;
 export type TypographyKey = keyof typeof typography;
 export type SpacingKey = keyof typeof spacing;
 export type ButtonVariant = keyof typeof buttonVariants;
-export type CardVariant = keyof typeof cardVariants;

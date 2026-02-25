@@ -11,7 +11,7 @@ const About: React.FC = () => {
           alt="Restaurant interior"
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/60 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-bg via-bg/60 to-transparent" />
         <div className="relative z-10 max-w-7xl mx-auto w-full">
           <p className="font-serif text-rust italic text-xl mb-3">About us</p>
           <h1

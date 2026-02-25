@@ -19,7 +19,7 @@ const MenuItemCard: React.FC<MenuItemCardProps> = React.memo(({ item, priority =
   const optimizedUrl = optimizeImageUrl(imageUrl);
 
   return (
-    <div className="group flex flex-col bg-white/5 border border-white/10 hover:border-rust/40 transition-all duration-300">
+    <div className="flex flex-col bg-white/5 border border-white/10 hover:border-rust/40 transition-all duration-300">
       {/* Image with lazy loading */}
       <div className="relative overflow-hidden aspect-square bg-white/5">
         <LazyLoadImage
@@ -32,7 +32,7 @@ const MenuItemCard: React.FC<MenuItemCardProps> = React.memo(({ item, priority =
           wrapperClassName="w-full h-full"
           loading={priority ? 'eager' : 'lazy'}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-bg/60 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-linear-to-t from-bg/60 to-transparent pointer-events-none" />
       </div>
 
       {/* Content */}

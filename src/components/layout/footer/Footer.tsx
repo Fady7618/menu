@@ -17,7 +17,7 @@ const iconMap = {
 
 const Footer: React.FC = () => {
   return (
-    <footer className="w-full h-auto relative bottom-0 left-0 border-t border-white/10 bg-bg px-8 md:px-16 py-12 z-10 z-50">
+    <footer className="w-full h-auto relative bottom-0 left-0 border-t border-white/10 bg-bg px-8 md:px-16 py-12 z-50">
       <div className="max-w-7xl mx-auto">
         {/* Top Section */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">

@@ -18,7 +18,7 @@ const SkeletonCard: React.FC<SkeletonCardProps> = ({ count = 4 }) => {
         >
           {/* Image skeleton */}
           <div className="relative overflow-hidden aspect-square bg-white/10">
-            <div className="absolute inset-0 bg-gradient-to-t from-bg/60 to-transparent" />
+            <div className="absolute inset-0 bg-linear-to-t from-bg/60 to-transparent" />
           </div>
 
           {/* Content skeleton */}
