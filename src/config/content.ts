@@ -19,7 +19,6 @@ export const HERO_CONTENT = {
   subtitle: 'Experience culinary excellence elevated by artisanal ingredients and a timeless open-flame tradition.',
   ctaButtons: [
     { text: 'View Menu', href: '/menu' },
-    { text: 'Book a Table', href: '#reservation' },
   ],
 } as const;
 
@@ -32,7 +31,7 @@ export const STORY_CONTENT = {
     'In 2009, chef Marcus Reyes converted a forgotten rail-yard warehouse on the edge of the city into what would become the most talked-about dining room in the region.',
     'Sixteen years later, The Ember & Oak holds two Michelin stars and remains exactly as it began — a single open kitchen, a hardwood fire, and a team of cooks who believe the best meal you\'ve ever had is still ahead of you.',
   ],
-  image: '/story.png',
+  image: 'sections/story.png',
   imageAlt: 'Restaurant atmosphere',
 } as const;
 
@@ -66,25 +65,25 @@ export const EVENTS = [
 
 // ===== MENU SECTION =====
 export const MENU_FALLBACK_IMAGES = [
-  'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=80&fit=crop',
-  'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&q=80&fit=crop',
-  'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80&fit=crop',
-  'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80&fit=crop',
-  'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400&q=80&fit=crop',
-  'https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=400&q=80&fit=crop',
-  'https://images.unsplash.com/photo-1518779578993-ec3579fee39f?w=400&q=80&fit=crop',
-  'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&q=80&fit=crop',
+  'menu-fallback/fallback1.jpg',
+  'menu-fallback/fallback2.jpg',
+  'menu-fallback/fallback3.jpg',
+  'menu-fallback/fallback4.jpg',
+  'menu-fallback/fallback5.jpg',
+  'menu-fallback/fallback6.jpg',
+  'menu-fallback/fallback7.jpg',
+  'menu-fallback/fallback8.jpg',
 ] as const;
 
 export const PLATE_IMAGES = [
-  'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=300&q=80&fit=crop',
-  'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=300&q=80&fit=crop',
-  'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=300&q=80&fit=crop',
-  'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=300&q=80&fit=crop',
-  'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=300&q=80&fit=crop',
-  'https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=300&q=80&fit=crop',
-  'https://images.unsplash.com/photo-1518779578993-ec3579fee39f?w=400&q=80&fit=crop',
-  'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80&fit=crop',
+  'plates/plate1.jpg',
+  'plates/plate2.jpg',
+  'plates/plate3.jpg',
+  'plates/plate4.jpg',
+  'plates/plate5.jpg',
+  'plates/plate6.jpg',
+  'plates/plate7.jpg',
+  'plates/plate8.jpg',
 ] as const;
 
 // ===== ABOUT PAGE =====
@@ -116,25 +115,25 @@ export const TEAM = [
     id: 'marcus-reyes',
     name: 'Marcus Reyes',
     role: 'Executive Chef & Founder',
-    img: '/member-1.jpg',
+    img: 'members/member-1.jpg',
   },
   {
     id: 'lena-fischer',
     name: 'Lena Fischer',
     role: 'Head Sommelier',
-    img: '/member-2.jpg',
+    img: 'members/member-2.jpg',
   },
   {
     id: 'james-okafor',
     name: 'James Okafor',
     role: 'Sous Chef',
-    img: '/member-3.jpg',
+    img: 'members/member-3.jpg',
   },
   {
     id: 'priya-nair',
     name: 'Priya Nair',
     role: 'Pastry Chef',
-    img: '/member-4.jpg',
+    img: 'members/member-4.jpg',
   },
 ] as const;
 

@@ -7,7 +7,7 @@ const About: React.FC = () => {
       {/* Hero */}
       <div className="relative h-[70vh] flex items-end pb-16 px-8 md:px-16 overflow-hidden">
         <img
-          src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1400&q=80&fit=crop"
+          src="sections/about.jpg"
           alt="Restaurant interior"
           className="absolute inset-0 w-full h-full object-cover"
         />
