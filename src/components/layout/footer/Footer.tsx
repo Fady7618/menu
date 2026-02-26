@@ -17,12 +17,12 @@ const iconMap = {
 
 const Footer: React.FC = () => {
   return (
-    <footer className="w-full h-auto relative bottom-0 left-0 border-t border-white/10 bg-bg px-8 md:px-16 py-12 z-50">
-      <div className="max-w-7xl mx-auto">
+    <footer className="w-full h-auto relative bottom-0 left-0 border-t border-white/10 bg-bg px-8 py-12 z-50">
+      <div className="flex flex-col gap-y-6 max-w-7xl mx-auto">
         {/* Top Section */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
           {/* Brand & Description */}
-          <div className="col-span-1">
+          <div className="col-span-full md:col-span-1 text-center md:text-start">
             <BrandLogo size="sm" />
             <p className="font-sans text-sm text-white/50 mt-4">
               {FOOTER_CONFIG.description}
@@ -64,7 +64,7 @@ const Footer: React.FC = () => {
           {/* Hours */}
           <div>
             <h3 className="font-sans text-xs uppercase tracking-[0.2em] text-white/70 mb-4">Hours</h3>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-3">
               {FOOTER_CONFIG.hours.map((item) => (
                 <div key={item.id} className="font-sans text-sm text-white/40">
                   <span className="text-white/60">{item.day}:</span> {item.time}
@@ -72,33 +72,37 @@ const Footer: React.FC = () => {
               ))}
             </div>
           </div>
+
+          {/* Social Links */}
+          <div>
+            <h3 className="font-sans text-xs uppercase tracking-[0.2em] text-white/70 mb-4">Follow Us</h3>
+            <div className="flex flex-col gap-3">
+              {FOOTER_CONFIG.social.map((social) => {
+                const IconComponent = iconMap[social.icon as keyof typeof iconMap];
+                return (
+                  <a
+                    key={social.id}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-white/60 hover:text-white transition-colors duration-200"
+                    aria-label={social.label}
+                  >
+                    {IconComponent && <IconComponent className="w-5 h-5" />}
+                    <span className="font-sans text-sm">{social.label}</span>
+                  </a>
+                );
+              })}
+            </div>
+          </div>
         </div>
 
         {/* Bottom Section */}
         <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
-          {/* Social Links */}
-          <div className="flex items-center gap-4">
-            {FOOTER_CONFIG.social.map((social) => {
-              const IconComponent = iconMap[social.icon as keyof typeof iconMap];
-              return (
-                <a
-                  key={social.id}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-white/60 hover:text-white transition-colors duration-200"
-                  aria-label={social.label}
-                >
-                  {IconComponent && <IconComponent className="w-5 h-5" />}
-                </a>
-              );
-            })}
-          </div>
-
           {/* Built By - Centered */}
           <div className="text-center">
-            <p className="font-sans text-xs text-white/30">
-              Built by <span className="text-rust">Your Name</span>
+            <p className="font-sans text-sm text-white/30 flex items-center justify-center gap-2">
+              Powered by <img src="/company-logo.png" alt="Company Logo" className="h-8 w-auto opacity-90 hover:opacity-100 transition-opacity" />
             </p>
           </div>
 
