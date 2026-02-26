@@ -2,7 +2,6 @@
  * Content Configuration - Centralized editorial content
  * All static content (brand info, events, team, etc.) in one manageable location
  */
-
 // ===== BRAND IDENTITY =====
 export const BRAND = {
   name: 'The Ember & Oak',
