@@ -47,23 +47,21 @@ npm run dev
 Open http://localhost:5173 (or the port Vite reports) in your browser.
 
 Environment / required variables
-- VITE_GOOGLE_SHEET_URL — CSV export URL for the menu spreadsheet. The app will throw at startup if this variable is missing (see `src/config/env.ts`).
+- `VITE_GOOGLE_SHEET_URL` — CSV export URL for the menu spreadsheet. The app will throw at startup if this variable is missing (see `src/config/env.ts`).
 
 Available scripts
-- npm run dev — start Vite dev server
-- npm run build — build production assets (runs TypeScript project build and Vite build)
-- npm run preview — locally preview the production build
-- npm run lint — run ESLint checks
+- `npm run dev` — start Vite dev server
+- `npm run lint` — run ESLint checks
 
 Project structure (important files)
-- src/App.tsx — top-level app, router and GSAP ScrollSmoother initialization
-- src/pages — page-level routes (Home, Menu, About, NotFound)
-- src/components — presentational and feature components (menu carousel, hero, reservation, header/footer, loaders)
-- src/services — data access layer
+- `src/App.tsx` — top-level app, router and GSAP ScrollSmoother initialization
+- `src/pages` — page-level routes (Home, Menu, About, NotFound)
+- `src/components` — presentational and feature components (menu carousel, hero, reservation, header/footer, loaders)
+- `src/services` — data access layer
   - googlesheets.ts — CSV fetching + caching using PapaParse
   - menuService.ts — business logic, caching, category grouping, search, prefetch
-- src/hooks — custom hooks (useMenu, useScrollAnimation)
-- src/config — content, routes, carousel defaults and design tokens
+- `src/hooks` — custom hooks (useMenu, useScrollAnimation)
+- `src/config` — content, routes, carousel defaults and design tokens
 - public/ — static images used by the app (plates, members, fallback images)
 
 Notable implementation details
